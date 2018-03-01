@@ -1,6 +1,7 @@
 language: node_js
 node_js: "8"
 dist: trusty
+sudo: true
 cache:
   yarn: true
   directories:
@@ -18,5 +19,9 @@ script:
   - yarn test
   - yarn test-cache
   - (cd middleware && yarn lint && yarn test)
+  - cd $TRAVIS_BUILD_DIR
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker build -t ovcorporation/renderton .
+  - docker push ovcorporation/renderton
 addons:
   chrome: stable
